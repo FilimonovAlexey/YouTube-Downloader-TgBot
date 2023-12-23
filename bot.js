@@ -2,8 +2,9 @@ const TelegramBot = require('node-telegram-bot-api');
 const ytdl = require('ytdl-core');
 const fs = require('fs');
 
-// Замените 'YOUR_TELEGRAM_BOT_TOKEN' на токен вашего бота
-const bot = new TelegramBot('YOUR_TELEGRAM_BOT_TOKEN', {polling: true});
+require('dotenv').config();
+const token = process.env.TELEGRAM_BOT_TOKEN;
+const bot = new TelegramBot(token, {polling: true});
 
 bot.on('message', async (msg) => {
   const chatId = msg.chat.id;
