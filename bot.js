@@ -3,7 +3,7 @@ const ytdl = require('ytdl-core');
 const fs = require('fs');
 
 // Замените 'YOUR_TELEGRAM_BOT_TOKEN' на токен вашего бота
-const bot = new TelegramBot('6822754751:AAFyxakX7iqW1TXitlb8mRrd-w6Sr-tdsVY', {polling: true});
+const bot = new TelegramBot('YOUR_TELEGRAM_BOT_TOKEN', {polling: true});
 
 bot.on('message', async (msg) => {
   const chatId = msg.chat.id;
