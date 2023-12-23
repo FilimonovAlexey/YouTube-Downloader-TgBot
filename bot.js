@@ -3,16 +3,24 @@ const ytdl = require('ytdl-core');
 const fs = require('fs');
 
 // Замените 'YOUR_TELEGRAM_BOT_TOKEN' на токен вашего бота
-const bot = new TelegramBot('YOUR_TELEGRAM_BOT_TOKEN', {polling: true});
+const bot = new TelegramBot('6822754751:AAFyxakX7iqW1TXitlb8mRrd-w6Sr-tdsVY', {polling: true});
 
-bot.on('message', (msg) => {
+bot.on('message', async (msg) => {
   const chatId = msg.chat.id;
   const url = msg.text;
 
   // Проверяем, что это валидная ссылка на YouTube
   if (ytdl.validateURL(url)) {
     bot.sendMessage(chatId, 'Скачиваю видео...');
-    const stream = ytdl(url, { filter: format => format.container === 'mp4' });
+
+    // Получаем информацию о видео
+    let info = await ytdl.getInfo(url);
+
+    // Выбираем поток с наивысшим качеством видео
+    let format = ytdl.chooseFormat(info.formats, { quality: 'highestvideo' });
+        
+    // Создаем поток для скачивания
+    const stream = ytdl.downloadFromInfo(info, { format: format });
     const fileName = `video-${chatId}-${Date.now()}.mp4`;
 
     stream.pipe(fs.createWriteStream(fileName)).on('close', () => {
